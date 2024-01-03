@@ -1,4 +1,4 @@
-# Time Tracker
+# TimelyTrack
 
 A simple terminal-based time tracking application to help you manage and log your work on various projects.
 
