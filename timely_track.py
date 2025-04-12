@@ -86,10 +86,10 @@ def log_time(project, hours, date=None):
     entry = f'{date} - {project}: {hours} hours'
 
     # Ask the user if they want to add a comment
-    comment_choice = input('\nDo you want to add a comment? (y/n): ').lower()
+    comment_choice = input('\nDo you want to add a comment? (y/n)\n~>').lower()
 
     if comment_choice == 'y':
-        comment = input('Enter your comment: ')
+        comment = input('Enter your comment\n~>')
         entry += f' - {comment}'
 
     entry += '\n'
@@ -106,7 +106,7 @@ def new_project():
     clear_screen()
     print('-' * len(f'  New Project  ') + f'\n  New Project')
     print('-' * len(f'  New Project  '))
-    name = input(' Enter project name: ')
+    name = input(' Enter project name\n~>')
     save_project(name)
     clear_screen()
 
@@ -125,16 +125,17 @@ def existing_project():
         for i, project in enumerate(projects, start=1):
             print(f'{i}. {project}')
 
-        print('M. Manual Time Entry')
+        print('H. Historic Time Entry')
         print('0. Back to Main Menu')
+        print('-' * len(f'  Projects Menu  '))
         
-        choice = input("Select a project, 'M' for manual time entry, or '0' to go back: ")
+        choice = input("Select a project, 'H' for historic time entry, or '0' to go back\n~>")
 
         if choice == '0':
             # Clear the screen before breaking out of the loop
             clear_screen()
             break
-        elif choice.upper() == 'M':
+        elif choice.upper() == 'H':
             manual_time_entry()
         else:
             try:
@@ -143,11 +144,12 @@ def existing_project():
                     selected_project = projects[choice - 1]
 
                     # Ask the user if they want to start a timer or enter time manually
-                    timer_choice = input(f"Do you want to start a timer for '{selected_project}'? (y/n): ").lower()
+                    timer_choice = input(f"Do you want to start a timer for '{selected_project}'? (y/n)\n~>").lower()
 
                     if timer_choice == 'y':
                         # Start the timer
                         start_time = time.time()
+                        print('-' * len('  Timer started. Press Enter to stop the timer  '))
                         print('Timer started. Press Enter to stop the timer.')
 
                         while True:
@@ -159,6 +161,7 @@ def existing_project():
 
                             # Check if Enter key is pressed
                             if msvcrt.kbhit() and msvcrt.getch() == b'\r':
+                                print('\n' + '-' * len('  Timer started. Press Enter to stop the timer  '))
                                 break
 
                             # Wait for a short interval before checking elapsed time again
@@ -175,10 +178,10 @@ def existing_project():
                         clear_screen()
                     elif timer_choice == 'n':
                         # User wants to enter time manually
-                        hours = float(input('Enter hours worked: '))
+                        hours = float(input('Enter hours worked\n~>'))
                         log_time(selected_project, round(hours, 2))  # Round the entered hours to 2 decimal places
                     else:
-                        print("Invalid choice. Please enter 'y' or 'n'.")
+                        print("Invalid choice. Please enter 'y' or 'n'\n~>")
                 else:
                     print('Invalid choice. Please try again.')
             except ValueError:
@@ -195,14 +198,14 @@ def manual_time_entry():
 
         print('-' * len(f'  Manual Time Entry  ') + f'\n  Manual Time Entry')
         print('-' * len(f'  Manual Time Entry  '))
-        print('Choose a date for manual time entry:')
+        print('Choose a date for manual time entry')
         print('1. Today')
         print('2. Yesterday')
         print('3. Two days ago')
         print('4. Three days ago')
-        print('0. Back to Projects Menu')
+        print('0. Back to Projects Menu\n')
 
-        choice = input(' Select an option: ')
+        choice = input('Select an option\n~>')
 
         if choice == '0':
             # Clear the screen before breaking out of the loop
@@ -223,9 +226,9 @@ def manual_time_entry():
                 for i, project in enumerate(projects, start=1):
                     print(f'{i}. {project}')
 
-                print('0. Back to Previous Menu')
+                print('\n0. Back to Previous Menu')
 
-                project_choice = input("Select a Project to manually enter time, or '0' to go back: ")
+                project_choice = input("Select a Project to manually enter time, or '0' to go back\n~>")
 
                 if project_choice == '0':
                     # Clear the screen before going back to the previous menu
@@ -238,7 +241,7 @@ def manual_time_entry():
                             selected_project = projects[project_choice - 1]
 
                             # Prompt the user to enter hours worked
-                            hours = float(input(f" Enter hours worked for '{selected_project}' on {selected_date_str}: "))
+                            hours = float(input(f" Enter hours worked for '{selected_project}' on {selected_date_str}\n~>"))
                             log_time(selected_project, round(hours, 2), selected_date_str)  # Round the entered hours to 2 decimal places
 
                             # Clear the screen after logging time
@@ -267,8 +270,9 @@ def delete_projects_menu():
             print(f'{i}. {project}')
 
         print('0. Back to Main Menu')
+        print('-' * len(f'  Delete Projects Menu  '))
 
-        choice = input(' Select a project to delete or enter "0" to go back: ')
+        choice = input('Select a project to delete or enter "0" to go back\n~>')
 
         if choice == '0':
             clear_screen()
@@ -395,7 +399,7 @@ def display_today_totals():
     clear_screen()
 
     if not time_log:
-        print("\n[!] No time log entries yet for Today.")
+        print("\nNo time log entries yet for Today.")
         return
 
     total_time_worked = {}
@@ -444,7 +448,7 @@ def display_today_totals():
     print("\nTotal Hours Worked:", sum(daily_totals.values()), "hours")
 
     # Wait for the user to press any key
-    input('\n[+] Press Enter to return to the Previous Menu...')
+    input('\nPress Enter to return to the Previous Menu...')
     # Clear the screen before returning to the main menu
     clear_screen()
 
@@ -460,7 +464,7 @@ def display_historic_totals():
     clear_screen()
 
     if not time_log:
-        print('\nNo time log entries yet.')
+        print('\nNo time log entries yet')
         return
 
     total_time_worked = {}
@@ -543,7 +547,7 @@ def time_menu():
         print('4. Time Log')
         print('0. Back to Main Menu')
         
-        choice = input('\nEnter your choice: ')
+        choice = input('\nEnter your choice\n~>')
 
         if choice == '1':
             display_today_totals()
@@ -572,7 +576,7 @@ def main_menu():
         print('4. Time Logs')
         print('5. Exit')
 
-        choice = input('\nEnter your choice: ')
+        choice = input('\nEnter your choice\n~>')
 
         if choice == '1':
             new_project()
